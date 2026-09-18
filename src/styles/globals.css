@@ -1,0 +1,252 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   SMART AGRITECH ROVER — Global Design System
+   Light Earthy Agricultural Theme
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Base ─────────────────────────────────────────────────── */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream-100 text-gray-800;
+  }
+
+  h1 { @apply text-3xl font-bold text-gray-900 tracking-tight; }
+  h2 { @apply text-2xl font-semibold text-gray-900; }
+  h3 { @apply text-lg font-semibold text-gray-800; }
+  h4 { @apply text-base font-semibold text-gray-700; }
+
+  a { @apply text-green-600 hover:text-green-700 transition-colors; }
+
+  * { box-sizing: border-box; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-cream-100; }
+  ::-webkit-scrollbar-thumb { @apply bg-earth-200 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-earth-300; }
+}
+
+/* ── Components ───────────────────────────────────────────── */
+@layer components {
+
+  /* ── Cards ── */
+  .card {
+    @apply bg-white rounded-xl shadow-card border border-earth-100 p-5;
+  }
+  .card-md {
+    @apply bg-white rounded-xl shadow-card-md border border-earth-100 p-6;
+  }
+  .card-hover {
+    @apply transition-shadow duration-200 hover:shadow-card-md cursor-pointer;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  .btn-primary {
+    @apply btn bg-green-500 hover:bg-green-600 text-white focus:ring-green-400 shadow-sm;
+  }
+  .btn-secondary {
+    @apply btn bg-earth-100 hover:bg-earth-200 text-earth-700 border border-earth-200 focus:ring-earth-300;
+  }
+  .btn-outline {
+    @apply btn bg-transparent border border-green-400 text-green-600 hover:bg-green-50 focus:ring-green-300;
+  }
+  .btn-danger {
+    @apply btn bg-red-600 hover:bg-red-700 text-white focus:ring-red-400 shadow-sm;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent hover:bg-earth-100 text-gray-600 focus:ring-gray-300;
+  }
+  .btn-lg {
+    @apply px-6 py-3 text-base rounded-xl;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs rounded-md;
+  }
+
+  /* ── Emergency Stop — always prominent ── */
+  .btn-emergency {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl
+           bg-red-600 hover:bg-red-700 active:bg-red-800
+           text-white font-extrabold text-base tracking-wide
+           shadow-lg shadow-red-200
+           transition-all duration-100
+           focus:outline-none focus:ring-4 focus:ring-red-400 focus:ring-offset-2
+           border-2 border-red-700;
+  }
+
+  /* ── Form Fields ── */
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+  .form-input {
+    @apply w-full px-3.5 py-2.5 rounded-lg border border-earth-200
+           bg-white text-gray-900 placeholder-gray-400
+           focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400
+           transition-colors text-sm;
+  }
+  .form-select {
+    @apply form-input appearance-none;
+  }
+  .form-textarea {
+    @apply form-input resize-y min-h-[80px];
+  }
+  .form-error {
+    @apply text-xs text-red-600 mt-1 flex items-center gap-1;
+  }
+  .form-hint {
+    @apply text-xs text-gray-500 mt-1;
+  }
+  .form-group {
+    @apply space-y-1;
+  }
+
+  /* ── Status Badges ── */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+  .badge-green  { @apply badge bg-green-100 text-green-700 border border-green-200; }
+  .badge-yellow { @apply badge bg-harvest-100 text-harvest-600 border border-harvest-200; }
+  .badge-red    { @apply badge bg-red-100 text-red-700 border border-red-200; }
+  .badge-gray   { @apply badge bg-gray-100 text-gray-600 border border-gray-200; }
+  .badge-blue   { @apply badge bg-blue-100 text-blue-700 border border-blue-200; }
+  .badge-terra  { @apply badge bg-terra-100 text-terra-600 border border-terra-200; }
+  .badge-olive  { @apply badge bg-olive-100 text-olive-700 border border-olive-200; }
+
+  /* ── Tables ── */
+  .table-base {
+    @apply w-full text-sm text-left;
+  }
+  .table-base thead tr {
+    @apply bg-cream-100 border-b border-earth-200;
+  }
+  .table-base thead th {
+    @apply px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide;
+  }
+  .table-base tbody tr {
+    @apply border-b border-earth-100 hover:bg-cream-50 transition-colors;
+  }
+  .table-base tbody td {
+    @apply px-4 py-3 text-gray-700;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+           text-gray-600 hover:text-gray-900 hover:bg-earth-100
+           transition-all duration-150;
+  }
+  .sidebar-item-active {
+    @apply bg-green-50 text-green-700 font-semibold border-l-2 border-green-500;
+  }
+
+  /* ── Alert / Info Boxes ── */
+  .alert-info    { @apply p-4 rounded-lg bg-blue-50 border border-blue-200 text-blue-800 text-sm; }
+  .alert-success { @apply p-4 rounded-lg bg-green-50 border border-green-200 text-green-800 text-sm; }
+  .alert-warning { @apply p-4 rounded-lg bg-harvest-50 border border-harvest-200 text-harvest-700 text-sm; }
+  .alert-danger  { @apply p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm; }
+
+  /* ── Rover Control Panel ── */
+  .rover-btn {
+    @apply flex items-center justify-center w-16 h-16 rounded-xl
+           bg-white border-2 border-earth-200
+           shadow-card hover:shadow-card-md hover:border-green-400 hover:bg-green-50
+           text-gray-700 hover:text-green-700
+           transition-all duration-150 active:scale-95
+           focus:outline-none focus:ring-2 focus:ring-green-400;
+  }
+
+  /* ── Page Container ── */
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6;
+  }
+
+  /* ── Section Header ── */
+  .section-header {
+    @apply flex items-center justify-between mb-4;
+  }
+  .section-title {
+    @apply flex items-center gap-2 text-lg font-semibold text-gray-900;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    @apply border-t border-earth-100 my-4;
+  }
+
+  /* ── Loading Skeleton ── */
+  .skeleton {
+    @apply animate-pulse bg-earth-100 rounded;
+  }
+
+  /* ── Nav Topbar ── */
+  .topbar {
+    @apply fixed top-0 left-0 right-0 h-16 z-40
+           bg-white border-b border-earth-200 shadow-sm
+           flex items-center justify-between px-4 sm:px-6;
+  }
+
+  /* ── Unavailable State ── */
+  .unavailable-box {
+    @apply flex flex-col items-center justify-center gap-2
+           py-8 px-4 rounded-lg bg-cream-100 border border-dashed border-earth-200
+           text-gray-400 text-sm text-center;
+  }
+
+  /* ── Connection Status ── */
+  .status-dot-green  { @apply w-2.5 h-2.5 rounded-full bg-green-500 shadow shadow-green-300; }
+  .status-dot-yellow { @apply w-2.5 h-2.5 rounded-full bg-harvest-400; }
+  .status-dot-red    { @apply w-2.5 h-2.5 rounded-full bg-red-500; }
+  .status-dot-gray   { @apply w-2.5 h-2.5 rounded-full bg-gray-400; }
+}
+
+/* ── Utilities ────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  /* Subtle animated pulse for live indicators */
+  .pulse-live {
+    animation: pulse-live 2s ease-in-out infinite;
+  }
+  @keyframes pulse-live {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Camera view — dark overlay for HUD */
+  .camera-hud {
+    @apply relative bg-gray-900 rounded-xl overflow-hidden aspect-video
+           flex items-center justify-center border border-earth-200;
+  }
+
+  /* Fade in */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    @apply h-2 rounded-full bg-earth-100 overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-500;
+  }
+}
