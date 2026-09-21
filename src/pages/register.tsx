@@ -9,6 +9,7 @@ export default function Register() {
     full_name: '',
     email: '',
     phone: '',
+    telegram_chat_id: '',
     farm_name: '',
     farm_location: '',
     farm_area_hectares: '',
@@ -18,6 +19,7 @@ export default function Register() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [accountExists, setAccountExists] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -26,7 +28,13 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (loading) {
+      return;
+    }
+
     setError('');
+    setAccountExists(false);
     setLoading(true);
 
     try {
@@ -42,7 +50,13 @@ export default function Register() {
       });
       setSuccess(true);
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Failed to submit registration request.');
+      const detail = err.response?.data?.detail;
+      if (err.response?.status === 409 && detail?.includes('account')) {
+        setAccountExists(true);
+        setError('An account with this email already exists. Please sign in instead.');
+      } else {
+        setError(detail || 'Failed to submit registration request.');
+      }
     } finally {
       setLoading(false);
     }
@@ -95,6 +109,11 @@ export default function Register() {
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">Error</h3>
                     <div className="mt-2 text-sm text-red-700"><p>{error}</p></div>
+                    {accountExists && (
+                      <Link href="/login" className="mt-3 inline-block text-sm font-semibold text-agri-green hover:underline">
+                        Go to login
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -106,15 +125,20 @@ export default function Register() {
                 <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                   <div className="sm:col-span-2">
                     <label htmlFor="full_name" className="block text-sm font-medium text-gray-700">Full Name *</label>
-                    <input type="text" name="full_name" id="full_name" required value={formData.full_name} onChange={handleChange} className="mt-1 input-field" />
+                    <input type="text" name="full_name" id="full_name" required value={formData.full_name} onChange={handleChange} className="mt-1 input" />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address *</label>
-                    <input type="email" name="email" id="email" required value={formData.email} onChange={handleChange} className="mt-1 input-field" />
+                    <input type="email" name="email" id="email" required value={formData.email} onChange={handleChange} className="mt-1 input" />
                   </div>
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number *</label>
-                    <input type="tel" name="phone" id="phone" required value={formData.phone} onChange={handleChange} className="mt-1 input-field" />
+                    <input type="tel" name="phone" id="phone" required value={formData.phone} onChange={handleChange} className="mt-1 input" />
+                  </div>
+                  <div>
+                    <label htmlFor="telegram_chat_id" className="block text-sm font-medium text-gray-700">Telegram Chat ID</label>
+                    <input type="text" name="telegram_chat_id" id="telegram_chat_id" value={formData.telegram_chat_id} onChange={handleChange} className="mt-1 input" placeholder="Example: 6041235578" />
+                    <p className="mt-1 text-xs text-gray-500">Start @bhuma_bot first, then enter the chat ID.</p>
                   </div>
                 </div>
               </div>
@@ -124,19 +148,19 @@ export default function Register() {
                 <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                   <div className="sm:col-span-2">
                     <label htmlFor="farm_name" className="block text-sm font-medium text-gray-700">Farm Name *</label>
-                    <input type="text" name="farm_name" id="farm_name" required value={formData.farm_name} onChange={handleChange} className="mt-1 input-field" />
+                    <input type="text" name="farm_name" id="farm_name" required value={formData.farm_name} onChange={handleChange} className="mt-1 input" />
                   </div>
                   <div className="sm:col-span-2">
                     <label htmlFor="farm_location" className="block text-sm font-medium text-gray-700">Location/Address *</label>
-                    <input type="text" name="farm_location" id="farm_location" required value={formData.farm_location} onChange={handleChange} className="mt-1 input-field" />
+                    <input type="text" name="farm_location" id="farm_location" required value={formData.farm_location} onChange={handleChange} className="mt-1 input" />
                   </div>
                   <div>
                     <label htmlFor="farm_area_hectares" className="block text-sm font-medium text-gray-700">Total Area (Hectares)</label>
-                    <input type="number" step="0.1" name="farm_area_hectares" id="farm_area_hectares" value={formData.farm_area_hectares} onChange={handleChange} className="mt-1 input-field" />
+                    <input type="number" step="0.1" name="farm_area_hectares" id="farm_area_hectares" value={formData.farm_area_hectares} onChange={handleChange} className="mt-1 input" />
                   </div>
                   <div>
                     <label htmlFor="main_crops" className="block text-sm font-medium text-gray-700">Main Crops Grown</label>
-                    <input type="text" name="main_crops" id="main_crops" placeholder="e.g. Corn, Soybeans" value={formData.main_crops} onChange={handleChange} className="mt-1 input-field" />
+                    <input type="text" name="main_crops" id="main_crops" placeholder="e.g. Corn, Soybeans" value={formData.main_crops} onChange={handleChange} className="mt-1 input" />
                   </div>
                 </div>
               </div>
@@ -145,7 +169,7 @@ export default function Register() {
                 <h3 className="text-lg font-medium text-gray-900 border-b pb-2 mb-4">Hardware (Optional)</h3>
                 <div className="sm:col-span-2">
                   <label htmlFor="rover_id" className="block text-sm font-medium text-gray-700">Rover ID (if pre-purchased)</label>
-                  <input type="text" name="rover_id" id="rover_id" placeholder="e.g. ROV-2026-X1" value={formData.rover_id} onChange={handleChange} className="mt-1 input-field" />
+                  <input type="text" name="rover_id" id="rover_id" placeholder="e.g. ROV-2026-X1" value={formData.rover_id} onChange={handleChange} className="mt-1 input" />
                 </div>
               </div>
 

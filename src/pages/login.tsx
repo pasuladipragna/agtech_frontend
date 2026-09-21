@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
-import { Leaf, AlertCircle } from 'lucide-react';
+import { Leaf, AlertCircle, Mail } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -55,7 +55,7 @@ export default function Login() {
               Welcome back
             </h2>
             <p className="mt-2 text-sm text-gray-600">
-              Sign in to manage your farm and rovers
+              Sign in to manage your farm and agricultural activities
             </p>
           </div>
 
@@ -94,20 +94,20 @@ export default function Login() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email address
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Username or Email
                 </label>
-                <div className="mt-1">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <Mail className="h-5 w-5" />
+                  </div>
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
+                    type="text"
                     required
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="input-field"
-                    placeholder="farmer@example.com"
+                    onChange={e => setEmail(e.target.value)}
+                    className="pl-10 input-field w-full"
+                    placeholder="Enter your username or email"
                   />
                 </div>
               </div>
@@ -125,7 +125,7 @@ export default function Login() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="input-field"
+                    className="input"
                   />
                 </div>
               </div>
@@ -167,21 +167,15 @@ export default function Login() {
                   <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-agri-cream text-gray-500">Don't have an account?</span>
+                  <span className="px-2 bg-agri-cream text-gray-500">Need an account?</span>
                 </div>
               </div>
 
               <div className="mt-6 text-center">
                 <Link href="/register" className="font-medium text-agri-green hover:text-agri-dark">
-                  Request access for your farm
+                  Register as a Farmer
                 </Link>
               </div>
-            </div>
-            
-            <div className="mt-8 text-center text-xs text-gray-500">
-              <Link href="/admin/login" className="hover:text-gray-700 underline underline-offset-2">
-                Admin Portal
-              </Link>
             </div>
           </div>
         </div>
@@ -189,12 +183,12 @@ export default function Login() {
 
       {/* Right section: Image/branding */}
       <div className="hidden lg:block relative w-0 flex-1">
-        <div className="absolute inset-0 bg-agri-green opacity-90"></div>
         <img
-          className="absolute inset-0 h-full w-full object-cover mix-blend-overlay"
+          className="absolute inset-0 h-full w-full object-cover"
           src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=2070&auto=format&fit=crop"
           alt="Smart farm field at sunset"
         />
+        <div className="absolute inset-0 bg-agri-dark/60"></div>
         <div className="absolute inset-0 flex flex-col items-center justify-center px-12 text-center z-10">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
             The Future of<br/>Precision Farming

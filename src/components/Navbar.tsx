@@ -10,7 +10,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ wsConnected = true }) => {
   const { user, logout } = useAuth();
   const [currentTime, setCurrentTime] = useState<string>("");
-  const logoHref = user ? (user.role === "admin" ? "/admin" : "/dashboard") : "/";
+  const logoHref = user ? (user.role === "ADMIN" ? "/admin" : "/farmer/dashboard") : "/";
 
   useEffect(() => {
     const update = () => {
@@ -59,15 +59,15 @@ export const Navbar: React.FC<NavbarProps> = ({ wsConnected = true }) => {
         {user ? (
           <div className="flex items-center space-x-3 pl-3 border-l border-emerald-900/30">
             <div className="w-8 h-8 rounded-full bg-emerald-950 border border-emerald-600 flex items-center justify-center text-emerald-400 font-semibold text-sm">
-              {user.role === "admin" ? "AD" : "JD"}
+              {user.role === "ADMIN" ? "AD" : "JD"}
             </div>
             <div className="hidden lg:block text-left text-xs">
               <div className="font-semibold text-gray-200">{user.full_name}</div>
               <div className="flex items-center gap-1 mt-0.5">
                 <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold ${
-                  user.role === "admin" ? "bg-red-950 text-red-400 border border-red-800" : "bg-emerald-950 text-emerald-400 border border-emerald-800"
+                  user.role === "ADMIN" ? "bg-red-950 text-red-400 border border-red-800" : "bg-emerald-950 text-emerald-400 border border-emerald-800"
                 }`}>
-                  {user.role === "admin" ? "SYSTEM ADMIN" : "FARMER ROLE"}
+                  {user.role === "ADMIN" ? "SYSTEM ADMIN" : "FARMER ROLE"}
                 </span>
               </div>
             </div>

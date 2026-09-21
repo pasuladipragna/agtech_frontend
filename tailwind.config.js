@@ -11,6 +11,11 @@ module.exports = {
         sans: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
+        // ── agri-* aliases (used throughout all pages & components) ──
+        'agri-cream':  '#fefcf0',   // warm cream background
+        'agri-green':  '#3d8c42',   // primary green action color
+        'agri-dark':   '#2f7035',   // darker green for hover states
+        'agri-beige':  '#f0e0c0',   // earthy beige for borders/dividers
         // Primary — Natural Green
         green: {
           50:  "#f0f7f0",

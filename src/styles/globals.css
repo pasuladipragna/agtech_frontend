@@ -115,6 +115,21 @@
     @apply space-y-1;
   }
 
+  /* ── Shorthand alias ── */
+  .input {
+    @apply w-full px-3.5 py-2.5 rounded-lg border border-gray-200
+           bg-white text-gray-900 placeholder-gray-400
+           focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400
+           transition-colors text-sm;
+  }
+  /* Alias used in modal forms (crops, fields, farm) */
+  .input-field {
+    @apply w-full px-3.5 py-2.5 rounded-lg border border-gray-200
+           bg-white text-gray-900 placeholder-gray-400
+           focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400
+           transition-colors text-sm;
+  }
+
   /* ── Status Badges ── */
   .badge {
     @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold;

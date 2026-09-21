@@ -1,54 +1,53 @@
-import React from "react";
-import { Navbar } from "./Navbar";
-import { Sidebar } from "./Sidebar";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { LayoutDashboard, Radio, Navigation, ScanEye, Droplets, LifeBuoy } from "lucide-react";
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useAuth } from '../context/AuthContext';
+import Sidebar from './Sidebar';
+import Topbar from './Topbar';
+import { Loader2 } from 'lucide-react';
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
+export function Layout({ children }: { children: React.ReactNode }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
-  return (
-    <div className="min-h-screen bg-[#070b09] text-gray-100 flex flex-col">
-      <Navbar wsConnected={true} />
+  // Public pages that don't need the dashboard layout
+  const isPublicPage = ['/', '/login', '/register'].includes(router.pathname);
 
-      <div className="flex flex-1">
-        <Sidebar />
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-agri-cream">
+        <Loader2 className="h-10 w-10 text-agri-green animate-spin" />
+        <span className="ml-3 text-gray-600 font-medium">Loading Smart AgriTech...</span>
+      </div>
+    );
+  }
+
+  // If public page, just render children without sidebar/topbar
+  if (isPublicPage) {
+    return <main className="min-h-screen bg-agri-cream">{children}</main>;
+  }
+
+  // If not authenticated and not on a public page, this will be handled by a route guard
+  // But we render nothing while redirecting to avoid layout flash
+  if (!isAuthenticated) {
+    return null; 
+  }
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-agri-cream">
+      <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+      
+      <div className="flex flex-col flex-1 w-0 overflow-hidden">
+        <Topbar setMobileOpen={setMobileOpen} />
         
-        <main className="flex-1 p-4 md:p-6 overflow-y-auto pb-20 md:pb-6">
-          {children}
+        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none">
+          <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            {children}
+          </div>
         </main>
       </div>
-
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 glass-panel border-t border-emerald-900/40 flex items-center justify-around z-50 px-2 bg-[#070b09]/95 backdrop-blur-md">
-        {[
-          { label: "Home", icon: LayoutDashboard, href: "/dashboard" },
-          { label: "Rover", icon: Radio, href: "/rover" },
-          { label: "Mission", icon: Navigation, href: "/missions" },
-          { label: "AI Vision", icon: ScanEye, href: "/vision" },
-          { label: "Spraying", icon: Droplets, href: "/spraying" },
-          { label: "Support", icon: LifeBuoy, href: "/support" }
-        ].map((item) => {
-          const isActive = router.pathname === item.href;
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex flex-col items-center justify-center space-y-1 py-1 px-2 rounded-lg text-[10px] ${
-                isActive ? "text-emerald-400 font-bold" : "text-gray-400"
-              }`}
-            >
-              <Icon className={`w-5 h-5 ${isActive ? "text-emerald-400" : "text-gray-400"}`} />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
     </div>
   );
-};
+}
+
+export default Layout;

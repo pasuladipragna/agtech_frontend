@@ -14,7 +14,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string, isAdmin?: boolean) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   checkAuth: () => Promise<void>;
 }
@@ -50,9 +50,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string, isAdmin: boolean = false) => {
-    const endpoint = isAdmin ? '/auth/admin/login' : '/auth/login';
-    const response = await api.post(endpoint, { email, password });
+  const login = async (email: string, password: string) => {
+    const response = await api.post('/auth/login', { email, password });
     
     const { access_token, user: userData } = response.data;
     localStorage.setItem('token', access_token);
@@ -62,9 +61,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
 
     if (userData.role === 'ADMIN') {
-      router.push('/admin/dashboard');
+      router.push('/admin');
     } else {
-      router.push('/dashboard');
+      router.push('/farmer/dashboard');
     }
   };
 
