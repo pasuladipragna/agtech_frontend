@@ -66,9 +66,9 @@ export default function SupportPage() {
         <meta name="description" content="Get help with your Smart AgriTech Rover — FAQs, troubleshooting, and support ticket submission." />
       </Head>
 
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <LifeBuoy className="h-7 w-7 text-agri-green" />
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <LifeBuoy className="h-6 w-6 sm:h-7 sm:w-7 text-agri-green flex-shrink-0" />
           {TERMS.support} Center
         </h1>
         <p className="mt-1 text-sm text-gray-500">

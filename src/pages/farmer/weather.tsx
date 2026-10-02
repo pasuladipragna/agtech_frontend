@@ -170,28 +170,29 @@ export default function WeatherPage() {
       </Head>
 
       {/* Header */}
-      <div className="mb-6 flex justify-between items-start flex-wrap gap-4">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Cloud className="h-7 w-7 text-agri-green" />
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <Cloud className="h-6 w-6 sm:h-7 sm:w-7 text-agri-green flex-shrink-0" />
             Farm Weather
           </h1>
           <p className="mt-1 text-sm text-gray-500 flex items-center gap-1.5">
-            <MapPin className="h-3.5 w-3.5 text-agri-green" />
-            {weather?.location || 'Your farm location'}
+            <MapPin className="h-3.5 w-3.5 text-agri-green flex-shrink-0" />
+            <span className="truncate">{weather?.location || 'Your farm location'}</span>
             {!weather?.farm_has_location && (
-              <span className="text-amber-500 text-xs font-medium ml-1">(default — set your farm location for accurate data)</span>
+              <span className="text-amber-500 text-xs font-medium ml-1 hidden sm:inline">(default — set your farm location)</span>
             )}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-shrink-0">
           <button
             id="btn-change-weather-location"
             onClick={() => { setShowSearch(v => !v); setSuggestions([]); setSearchQuery(''); setLocError(''); setLocSuccess(''); }}
             className="btn-outline flex items-center gap-2 text-sm"
           >
             <MapPin className="h-4 w-4" />
-            {weather?.farm_has_location ? 'Change Location' : 'Set Location'}
+            <span className="hidden sm:inline">{weather?.farm_has_location ? 'Change Location' : 'Set Location'}</span>
+            <span className="sm:hidden">Location</span>
           </button>
           <button
             onClick={() => fetchWeather(true)}
@@ -199,7 +200,7 @@ export default function WeatherPage() {
             className="btn-outline flex items-center gap-2 text-sm"
           >
             <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-            Refresh
+            <span className="hidden sm:inline">Refresh</span>
           </button>
         </div>
       </div>
@@ -354,7 +355,7 @@ export default function WeatherPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y divide-gray-100">
+            <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 divide-x-0 sm:divide-x divide-gray-100">
               {[
                 { icon: Droplets, label: 'Humidity', value: `${weather.humidity_pct}%`, color: 'text-blue-500' },
                 { icon: Wind, label: 'Wind', value: `${weather.wind_speed_kmh} km/h ${weather.wind_direction || ''}`, color: 'text-gray-500' },
@@ -380,27 +381,28 @@ export default function WeatherPage() {
               </div>
               <div className="divide-y divide-gray-50">
                 {weather.forecast.map((day, index) => (
-                  <div key={index} className="px-6 py-4 flex items-center justify-between hover:bg-gray-50/50 transition-colors">
-                    <div className="w-24">
+                  <div key={index} className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 hover:bg-gray-50/50 transition-colors">
+                    <div className="w-16 sm:w-24 flex-shrink-0">
                       <p className="font-medium text-gray-900 text-sm">
                         {index === 0 ? 'Today' : index === 1 ? 'Tomorrow'
                           : new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
                       </p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-gray-400 hidden sm:block">
                         {new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                       </p>
                     </div>
-                    <span className="text-2xl" role="img" aria-label={day.condition}>{conditionIcon(day.condition)}</span>
-                    <p className="text-sm text-gray-500 capitalize w-24 text-center hidden sm:block">{day.condition}</p>
-                    <div className="flex items-center gap-2 text-xs text-blue-500">
-                      <Droplets className="h-3 w-3" />
-                      {day.rainfall_mm ?? 0} mm
+                    <span className="text-xl sm:text-2xl" role="img" aria-label={day.condition}>{conditionIcon(day.condition)}</span>
+                    <p className="text-sm text-gray-500 capitalize w-20 text-center hidden md:block">{day.condition}</p>
+                    <div className="flex items-center gap-1 text-xs text-blue-500">
+                      <Droplets className="h-3 w-3 flex-shrink-0" />
+                      <span className="hidden sm:inline">{day.rainfall_mm ?? 0} mm</span>
+                      <span className="sm:hidden">{day.rainfall_mm ?? 0}mm</span>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <div className="items-center gap-1 text-xs text-gray-500 hidden sm:flex">
                       <Wind className="h-3 w-3" />
                       {day.wind_speed_kmh ?? 0} km/h
                     </div>
-                    <div className="flex items-center gap-3 font-medium text-sm">
+                    <div className="flex items-center gap-1.5 font-medium text-sm flex-shrink-0">
                       <span className="text-gray-900">{day.max_temp_c?.toFixed(0)}°</span>
                       <span className="text-gray-400">{day.min_temp_c?.toFixed(0)}°</span>
                     </div>

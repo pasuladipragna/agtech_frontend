@@ -93,10 +93,10 @@ export default function NotificationsPage() {
         <meta name="description" content="View and manage your farm notifications and system alerts." />
       </Head>
 
-      <div className="mb-8 flex justify-between items-start flex-wrap gap-4">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Bell className="h-7 w-7 text-agri-green" />
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <Bell className="h-6 w-6 sm:h-7 sm:w-7 text-agri-green flex-shrink-0" />
             {TERMS.notifications}
             {unreadCount > 0 && (
               <span className="ml-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white">
@@ -112,7 +112,7 @@ export default function NotificationsPage() {
           <button
             onClick={markAllRead}
             disabled={markingAll}
-            className="btn-outline flex items-center gap-2"
+            className="btn-outline flex items-center gap-2 w-full sm:w-auto"
           >
             <CheckCheck className="h-4 w-4" />
             {markingAll ? 'Marking...' : 'Mark All Read'}

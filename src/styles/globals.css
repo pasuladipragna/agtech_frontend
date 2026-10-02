@@ -16,6 +16,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    /* Prevent horizontal scroll on mobile */
+    overflow-x: hidden;
   }
 
   body {
@@ -187,7 +189,30 @@
 
   /* ── Page Container ── */
   .page-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6;
+    @apply max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6;
+  }
+
+  /* ── Mobile-safe page header (title + action) ── */
+  .page-header {
+    @apply flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6;
+  }
+  .page-header-actions {
+    @apply flex items-center gap-2 flex-wrap;
+  }
+
+  /* ── Responsive Stats Grid ── */
+  .stats-grid {
+    @apply grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4;
+  }
+
+  /* ── Card with no side padding on mobile ── */
+  .card-flush {
+    @apply bg-white rounded-xl border border-earth-100 shadow-card overflow-hidden;
+  }
+
+  /* ── Touch target for buttons on mobile ── */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
   }
 
   /* ── Section Header ── */
@@ -213,6 +238,16 @@
     @apply fixed top-0 left-0 right-0 h-16 z-40
            bg-white border-b border-earth-200 shadow-sm
            flex items-center justify-between px-4 sm:px-6;
+  }
+
+  /* ── Mobile bottom padding for safe areas (iOS) ── */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* ── Truncated text ── */
+  .text-truncate {
+    @apply truncate;
   }
 
   /* ── Unavailable State ── */

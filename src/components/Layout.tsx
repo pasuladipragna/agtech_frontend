@@ -7,11 +7,12 @@ import { Loader2 } from 'lucide-react';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
   // Public pages that don't need the dashboard layout
-  const isPublicPage = ['/', '/login', '/register'].includes(router.pathname);
+  const isPublicPage = ['/', '/login', '/register', '/vision', '/products', '/technology', '/applications', '/contact'].includes(router.pathname);
 
   if (isLoading) {
     return (
@@ -35,13 +36,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-agri-cream">
-      <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+      <Sidebar
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+        collapsed={sidebarCollapsed}
+      />
       
       <div className="flex flex-col flex-1 w-0 overflow-hidden">
-        <Topbar setMobileOpen={setMobileOpen} />
+        <Topbar
+          setMobileOpen={setMobileOpen}
+          sidebarCollapsed={sidebarCollapsed}
+          setSidebarCollapsed={setSidebarCollapsed}
+        />
         
-        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none">
-          <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none pt-16 lg:pt-0">
+          <div className="py-4 sm:py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             {children}
           </div>
         </main>

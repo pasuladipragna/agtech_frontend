@@ -1,232 +1,158 @@
-import React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import { Tractor, Leaf, Activity, ChevronRight } from 'lucide-react';
-import { TERMS } from '../constants/terminology';
+import React, { useState, useEffect } from 'react';
+import { PublicLayout } from '../components/PublicLayout';
 
 export default function Home() {
+  const [content, setContent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/cms')
+      .then(res => res.json())
+      .then(data => {
+        setContent(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading || !content) return <PublicLayout><div className="flex items-center justify-center min-h-screen text-[#4A6B53] font-bold">Loading AgriTech...</div></PublicLayout>;
+
   return (
-    <div className="bg-agri-cream min-h-screen font-sans">
-      <Head>
-        <title>Smart AgriTech Rover</title>
-        <meta name="description" content="Precision farming technology for modern agriculture" />
-      </Head>
-
-      {/* Navigation */}
-      <nav className="bg-white border-b border-agri-beige py-4 px-6 sm:px-12 flex justify-between items-center sticky top-0 z-50">
-        <div className="flex items-center space-x-2">
-          <Leaf className="h-8 w-8 text-agri-green" />
-          <span className="text-xl font-bold text-gray-900 tracking-tight">Smart AgriTech</span>
-        </div>
-        <div className="hidden md:flex items-center space-x-8">
-          <a href="#home" className="text-sm font-medium text-gray-600 hover:text-agri-green transition-colors">Home</a>
-          <a href="#about" className="text-sm font-medium text-gray-600 hover:text-agri-green transition-colors">About</a>
-          <a href="#testimonials" className="text-sm font-medium text-gray-600 hover:text-agri-green transition-colors">Testimonials</a>
-          <a href="#contact" className="text-sm font-medium text-gray-600 hover:text-agri-green transition-colors">Contact</a>
-        </div>
-        <div className="flex space-x-4">
-          <Link href="/login" className="btn-outline">
-            Login
-          </Link>
-          <Link href="/register" className="btn-primary">
-            Join Platform
-          </Link>
-        </div>
-      </nav>
-
+    <PublicLayout 
+      title={content.hero?.title ? `${content.hero.title} | Smart AgriTech` : "Smart AgriTech | Precision Agriculture"}
+      description={content.hero?.description || "Empowering modern agriculture with precision automated systems and data-driven insights."}
+    >
       {/* Hero Section */}
-      <section id="home" className="bg-agri-cream">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center">
-          <div className="flex flex-col">
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight text-gray-900">
-              Precision farming, <br />
-              <span className="text-agri-green">automated for you.</span>
+      <section className="relative overflow-hidden py-32 px-6 sm:px-12 bg-[#f9f9f6]">
+        <div className="absolute inset-0 z-0">
+            <div className="absolute top-0 right-0 w-[50%] h-full bg-[#E9EAE5] rounded-l-full opacity-50 blur-3xl transform translate-x-1/3"></div>
+        </div>
+        <div className="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8">
+            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] text-[#2C392F]">
+              {content.hero?.title || "Precision Agriculture"}
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700 mb-10 font-light">
-              Monitor {TERMS.cropHealth.toLowerCase()}, operate automated rovers, and manage your {TERMS.farm.toLowerCase()} with intelligent, rugged technology built for real farmers.
+            <p className="text-xl text-[#5C715E] font-light max-w-lg leading-relaxed whitespace-pre-wrap">
+              {content.hero?.description}
             </p>
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link
-                href="/register"
-                className="bg-agri-green hover:bg-agri-dark text-white text-lg font-bold font-sans tracking-wide px-8 py-4 rounded-md text-center transition-colors shadow-lg flex items-center justify-center sm:inline-flex sm:w-auto"
-              >
-                Request Platform Access
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </Link>
+            <div className="flex gap-4 pt-4">
+              <a href="#contact" className="bg-[#4A6B53] hover:bg-[#2C392F] text-white text-lg font-bold tracking-wide px-8 py-4 rounded-sm transition-all shadow-lg inline-block">
+                Explore Solutions
+              </a>
             </div>
           </div>
           <div className="relative">
-            <img
-            src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=2000&auto=format&fit=crop"
-              alt="Agricultural field at sunrise"
-              className="w-full h-auto rounded-2xl shadow-2xl object-cover border border-agri-beige"
-            />
+            <div className="aspect-square bg-[#E9EAE5] rounded-2xl overflow-hidden shadow-2xl relative border-4 border-white">
+                <img src={content.hero?.imageUrl} alt="Smart Farming" className="w-full h-full object-cover" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-6 sm:px-12 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Built for the Modern {TERMS.farmer}</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Our platform connects directly with hardware in your {TERMS.field.toLowerCase()}s to provide actionable insights and automated operations.
+      {/* Vision Section */}
+      <section id="vision" className="py-24 bg-white px-6 sm:px-12">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-[#D4A373] mb-4">Vision</h2>
+          <h3 className="text-4xl md:text-5xl font-extrabold text-[#2C392F] mb-8">{content.vision?.title}</h3>
+          <p className="text-xl text-[#5C715E] leading-relaxed whitespace-pre-wrap">
+            {content.vision?.description}
           </p>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-10">
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-agri-beige hover:shadow-md transition-shadow">
-            <div className="bg-green-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
-              <Activity className="h-7 w-7 text-agri-green" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">{TERMS.cropHealth} AI</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Upload images or process live video from your {TERMS.rover.toLowerCase()} to instantly detect plant diseases and receive treatment recommendations.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-agri-beige hover:shadow-md transition-shadow">
-            <div className="bg-amber-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
-              <Tractor className="h-7 w-7 text-amber-700" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Automated {TERMS.rover}s</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Control and monitor your agricultural robotics remotely. Schedule {TERMS.fieldTask.toLowerCase()}s and watch operations through the {TERMS.liveCamera.toLowerCase()}.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-agri-beige hover:shadow-md transition-shadow">
-            <div className="bg-blue-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
-              <Leaf className="h-7 w-7 text-blue-700" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Precision {TERMS.spraying}</h3>
-            <p className="text-gray-600 leading-relaxed">
-              Target specific areas of your {TERMS.field.toLowerCase()} based on AI analysis. Reduce chemical usage and protect your healthy {TERMS.crop.toLowerCase()}s automatically.
-            </p>
-          </div>
-        </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <img
-              src="https://images.unsplash.com/photo-1586771107445-d3ca888129ff?q=80&w=1000&auto=format&fit=crop"
-              alt="Farmer using technology"
-              className="rounded-2xl shadow-xl w-full h-auto object-cover"
-            />
-          </div>
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">About Smart AgriTech</h2>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-              We are a team of agricultural engineers, roboticists, and software developers dedicated to bringing precision farming technology to {TERMS.farmer.toLowerCase()}s everywhere.
-            </p>
-            <p className="text-lg text-gray-600 leading-relaxed">
-              Our mission is to increase yield, reduce chemical usage, and automate repetitive {TERMS.fieldTask.toLowerCase()}s through intelligent, rugged rovers and advanced crop health AI. We build real tools for real {TERMS.farm.toLowerCase()}s.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 bg-agri-cream">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12">
+      {/* Products Section */}
+      <section id="products" className="py-24 bg-[#f9f9f6] px-6 sm:px-12 border-t border-[#E9EAE5]">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">What {TERMS.farmer}s Say</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Hear from the people who are using our rovers in the {TERMS.field.toLowerCase()} every single day.
-            </p>
+            <h2 className="text-sm font-bold uppercase tracking-widest text-[#D4A373] mb-4">Products</h2>
+            <h3 className="text-4xl md:text-5xl font-extrabold text-[#2C392F] mb-6">{content.products?.title}</h3>
+            <p className="text-xl text-[#5C715E] max-w-2xl mx-auto">{content.products?.description}</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-agri-beige">
-              <div className="flex text-yellow-400 mb-4">
-                {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
-              </div>
-              <p className="text-gray-700 italic mb-6">
-                "The automated {TERMS.spraying.toLowerCase()} system cut our pesticide use by 30%. The rover spots the problem and treats only the affected {TERMS.crop.toLowerCase()}s. Incredible technology."
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="h-10 w-10 rounded-full bg-agri-green flex items-center justify-center text-white font-bold">R</div>
-                <div>
-                  <p className="font-bold text-gray-900">Rajesh Patel</p>
-                  <p className="text-sm text-gray-500">Wheat {TERMS.farmer}, Gujarat</p>
-                </div>
-              </div>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="bg-[#E9EAE5] rounded-2xl h-80 shadow-inner overflow-hidden border border-white">
+               <img src={content.products?.imageUrl} alt="Products" className="w-full h-full object-cover" />
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-agri-beige">
-              <div className="flex text-yellow-400 mb-4">
-                {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
-              </div>
-              <p className="text-gray-700 italic mb-6">
-                "The crop health AI detected blight a week before my trained agronomist saw it. It paid for itself in the first season by saving my tomato harvest."
+            <div>
+              <h4 className="text-3xl font-bold text-[#2C392F] mb-4">AgriRover Platform</h4>
+              <p className="text-[#5C715E] text-lg leading-relaxed mb-6">
+                Our flagship autonomous rovers are designed for heavy-duty tasks ranging from continuous soil monitoring to precise micro-spraying operations. Connect multiple units to form a synchronized farming fleet.
               </p>
-              <div className="flex items-center gap-4">
-                <div className="h-10 w-10 rounded-full bg-amber-600 flex items-center justify-center text-white font-bold">M</div>
-                <div>
-                  <p className="font-bold text-gray-900">Maria Garcia</p>
-                  <p className="text-sm text-gray-500">Organic Farm, California</p>
-                </div>
-              </div>
+              <a href="#contact" className="text-[#4A6B53] font-bold uppercase tracking-wide text-sm border-b-2 border-[#4A6B53] pb-1 hover:text-[#2C392F] hover:border-[#2C392F] transition-all">Request Spec Sheet</a>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-agri-beige hidden lg:block">
-              <div className="flex text-yellow-400 mb-4">
-                {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
-              </div>
-              <p className="text-gray-700 italic mb-6">
-                "I was skeptical of letting a robot roam my {TERMS.field.toLowerCase()}, but the safety constraints are rock solid. It stops instantly if it detects a person."
+          </div>
+        </div>
+      </section>
+
+      {/* Technology Section */}
+      <section id="technology" className="py-24 bg-white px-6 sm:px-12 border-t border-[#E9EAE5]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-[#D4A373] mb-4">Technology</h2>
+            <h3 className="text-4xl md:text-5xl font-extrabold text-[#2C392F] mb-6">{content.technology?.title}</h3>
+            <p className="text-xl text-[#5C715E] max-w-2xl mx-auto">{content.technology?.description}</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1">
+              <h4 className="text-3xl font-bold text-[#2C392F] mb-4">Edge Analytics</h4>
+              <p className="text-[#5C715E] text-lg leading-relaxed mb-6">
+                Powered by proprietary neural networks, our systems execute decisions on the device, eliminating latency and the need for constant cloud connectivity in remote fields.
               </p>
-              <div className="flex items-center gap-4">
-                <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">D</div>
-                <div>
-                  <p className="font-bold text-gray-900">David Smith</p>
-                  <p className="text-sm text-gray-500">Soybean {TERMS.farm}, Iowa</p>
-                </div>
-              </div>
+            </div>
+            <div className="order-1 md:order-2 bg-[#E9EAE5] rounded-2xl h-80 shadow-inner overflow-hidden border border-white">
+              <img src={content.technology?.imageUrl} alt="Technology" className="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Applications Section */}
+      <section id="applications" className="py-24 bg-[#f9f9f6] px-6 sm:px-12 border-t border-[#E9EAE5]">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-[#D4A373] mb-4">Applications</h2>
+          <h3 className="text-4xl md:text-5xl font-extrabold text-[#2C392F] mb-6">{content.applications?.title}</h3>
+          <p className="text-xl text-[#5C715E] max-w-2xl mx-auto mb-12">{content.applications?.description}</p>
+          <div className="w-full h-64 md:h-96 rounded-xl overflow-hidden shadow-xl border border-[#E9EAE5]">
+            <img src={content.applications?.imageUrl} alt="Applications" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      </section>
+
+      {/* Founders Section */}
+      <section id="founders" className="py-24 bg-white px-6 sm:px-12 border-t border-[#E9EAE5]">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-[#D4A373] mb-4">Team</h2>
+          <h3 className="text-4xl md:text-5xl font-extrabold text-[#2C392F] mb-6">{content.founders?.title}</h3>
+          <p className="text-xl text-[#5C715E] max-w-2xl mx-auto mb-16">{content.founders?.description}</p>
+          
+          <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto text-left">
+            <div className="p-8 bg-[#f9f9f6] rounded-xl border border-[#E9EAE5]">
+              <h4 className="text-2xl font-bold text-[#2C392F] mb-2">CEO & Founder</h4>
+              <p className="text-[#D4A373] font-bold text-sm uppercase tracking-wider mb-4">Vision & Strategy</p>
+              <p className="text-[#5C715E] leading-relaxed">Driving the overall mission to bring enterprise-grade robotics into the hands of modern commercial farmers.</p>
+            </div>
+            <div className="p-8 bg-[#f9f9f6] rounded-xl border border-[#E9EAE5]">
+              <h4 className="text-2xl font-bold text-[#2C392F] mb-2">CTO & Founder</h4>
+              <p className="text-[#D4A373] font-bold text-sm uppercase tracking-wider mb-4">Engineering & Hardware</p>
+              <p className="text-[#5C715E] leading-relaxed">Leading the development of ruggedized drivetrains and the proprietary edge AI vision systems.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white">
-        <div className="max-w-3xl mx-auto px-6 sm:px-12 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
-          <p className="text-lg text-gray-600 mb-10">
-            Interested in deploying our rovers on your {TERMS.farm.toLowerCase()}? Have technical questions? We'd love to hear from you.
-          </p>
-          <form className="bg-agri-cream p-8 rounded-2xl border border-agri-beige text-left shadow-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <input type="text" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-agri-green focus:border-agri-green" placeholder="Your name" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input type="email" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-agri-green focus:border-agri-green" placeholder="your@email.com" />
-              </div>
-            </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-              <textarea rows={4} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-agri-green focus:border-agri-green" placeholder="How can we help you?"></textarea>
-            </div>
-            <button type="button" onClick={(e) => { e.preventDefault(); alert('Message sent successfully!'); }} className="btn-primary w-full">
-              Send Message
-            </button>
-          </form>
+      <section id="contact" className="py-24 bg-[#2C392F] px-6 sm:px-12 text-white text-center">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-[#D4A373] mb-4">Contact Us</h2>
+          <h3 className="text-4xl md:text-5xl font-extrabold mb-6">{content.contact?.title}</h3>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10 whitespace-pre-wrap">{content.contact?.description}</p>
+          <a href="mailto:enterprise@agritech.com" className="bg-[#D4A373] hover:bg-white text-[#2C392F] text-lg font-bold tracking-wide px-10 py-4 rounded-sm transition-all shadow-lg inline-block">
+            Request Enterprise Consultation
+          </a>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-12 px-6 sm:px-12 text-center">
-        <div className="flex justify-center items-center space-x-2 mb-6">
-          <Leaf className="h-6 w-6 text-gray-500" />
-          <span className="text-lg font-semibold text-gray-300">Smart AgriTech</span>
-        </div>
-        <p className="text-sm">
-          &copy; {new Date().getFullYear()} Smart AgriTech Rover Platform. All rights reserved.
-        </p>
-      </footer>
-    </div>
+    </PublicLayout>
   );
 }

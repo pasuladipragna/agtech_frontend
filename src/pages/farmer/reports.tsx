@@ -106,17 +106,17 @@ export default function ReportsPage() {
         <meta name="description" content="Generate and download farm reports covering crop health, spraying operations, and rover activity." />
       </Head>
 
-      <div className="mb-8 flex justify-between items-start flex-wrap gap-4">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <FileText className="h-7 w-7 text-agri-green" />
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <FileText className="h-6 w-6 sm:h-7 sm:w-7 text-agri-green flex-shrink-0" />
             {TERMS.reports}
           </h1>
           <p className="mt-1 text-sm text-gray-500">
             Generate and download detailed reports for your {TERMS.farm.toLowerCase()} operations.
           </p>
         </div>
-        <button onClick={() => setShowForm(true)} className="btn-primary" disabled={showForm}>
+        <button onClick={() => setShowForm(true)} className="btn-primary w-full sm:w-auto" disabled={showForm}>
           <FileText className="h-4 w-4" />
           Generate Report
         </button>
@@ -216,14 +216,14 @@ export default function ReportsPage() {
               const config = TYPE_CONFIG[report.type] || TYPE_CONFIG.CUSTOM;
               const IconComp = config.icon;
               return (
-                <div key={report.id} className="px-6 py-5 flex items-center justify-between hover:bg-gray-50/50 transition-colors">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-agri-green/10 rounded-lg">
-                      <IconComp className="h-5 w-5 text-agri-green" />
+                <div key={report.id} className="px-4 sm:px-6 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 hover:bg-gray-50/50 transition-colors">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div className="p-2.5 sm:p-3 bg-agri-green/10 rounded-lg flex-shrink-0">
+                      <IconComp className="h-4 w-4 sm:h-5 sm:w-5 text-agri-green" />
                     </div>
-                    <div>
-                      <p className="font-semibold text-gray-900">{report.title}</p>
-                      <div className="flex items-center gap-2 mt-1">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-gray-900 truncate">{report.title}</p>
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${config.color}`}>
                           {report.type.replace('_', ' ')}
                         </span>
@@ -233,8 +233,8 @@ export default function ReportsPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <p className="text-xs text-gray-400 hidden sm:block">
+                  <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 flex-shrink-0">
+                    <p className="text-xs text-gray-400">
                       Generated {new Date(report.generated_at).toLocaleDateString()}
                     </p>
                     {report.status === 'GENERATING' ? (

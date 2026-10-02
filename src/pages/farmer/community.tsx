@@ -95,17 +95,17 @@ export default function CommunityPage() {
         <meta name="description" content="Connect with other farmers, share tips, and get advice on crop management and farming best practices." />
       </Head>
 
-      <div className="mb-8 flex justify-between items-start flex-wrap gap-4">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <MessageSquare className="h-7 w-7 text-agri-green" />
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <MessageSquare className="h-6 w-6 sm:h-7 sm:w-7 text-agri-green flex-shrink-0" />
             {TERMS.community}
           </h1>
           <p className="mt-1 text-sm text-gray-500">
             Connect with other {TERMS.farmer.toLowerCase()}s, share tips and get advice.
           </p>
         </div>
-        <button onClick={() => setShowForm(true)} className="btn-primary" disabled={showForm}>
+        <button onClick={() => setShowForm(true)} className="btn-primary w-full sm:w-auto" disabled={showForm}>
           <Plus className="h-4 w-4" />
           Share with Community
         </button>
@@ -169,7 +169,7 @@ export default function CommunityPage() {
       )}
 
       {/* Tag filter */}
-      <div className="mb-6 flex flex-wrap gap-2 items-center">
+      <div className="mb-6 flex flex-wrap gap-2 items-center overflow-x-auto pb-1">
         <button
           onClick={() => setSelectedTag('')}
           className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${

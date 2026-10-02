@@ -142,9 +142,9 @@ export default function SettingsPage() {
         <meta name="description" content="Configure your farm settings, automation preferences, and account security." />
       </Head>
 
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <Settings className="h-7 w-7 text-agri-green" />
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <Settings className="h-6 w-6 sm:h-7 sm:w-7 text-agri-green flex-shrink-0" />
           Settings
         </h1>
         <p className="mt-1 text-sm text-gray-500">
@@ -152,7 +152,7 @@ export default function SettingsPage() {
         </p>
       </div>
 
-      <div className="max-w-2xl space-y-8">
+      <div className="max-w-2xl w-full space-y-6 sm:space-y-8">
 
         {/* Farm Settings */}
         <form onSubmit={saveFarmSettings} className="bg-white rounded-xl border border-agri-beige shadow-sm overflow-hidden">

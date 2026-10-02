@@ -85,9 +85,9 @@ export default function ProfilePage() {
         <meta name="description" content="View and update your farmer profile information." />
       </Head>
 
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <User className="h-7 w-7 text-agri-green" />
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <User className="h-6 w-6 sm:h-7 sm:w-7 text-agri-green flex-shrink-0" />
           My Profile
         </h1>
         <p className="mt-1 text-sm text-gray-500">
@@ -97,12 +97,12 @@ export default function ProfilePage() {
 
       <div className="max-w-2xl">
         {/* Avatar Card */}
-        <div className="bg-white rounded-xl border border-agri-beige shadow-sm p-6 mb-6 flex items-center gap-5">
-          <div className="h-20 w-20 rounded-full bg-gradient-to-br from-agri-green to-emerald-700 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
+        <div className="bg-white rounded-xl border border-agri-beige shadow-sm p-5 sm:p-6 mb-6 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 text-center sm:text-left">
+          <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-gradient-to-br from-agri-green to-emerald-700 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold flex-shrink-0">
             {profile.full_name ? profile.full_name.charAt(0).toUpperCase() : '?'}
           </div>
           <div>
-            <p className="text-lg font-bold text-gray-900">{profile.full_name || 'Unnamed Farmer'}</p>
+            <p className="text-base sm:text-lg font-bold text-gray-900">{profile.full_name || 'Unnamed Farmer'}</p>
             <p className="text-sm text-gray-500">{profile.email}</p>
             <span className="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
               {TERMS.farmer}

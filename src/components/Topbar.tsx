@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Menu, Bell, User as UserIcon, Settings, LogOut } from 'lucide-react';
+import { Menu, PanelLeftClose, PanelLeftOpen, Bell, User as UserIcon, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { TERMS } from '../constants/terminology';
 import Link from 'next/link';
@@ -7,9 +7,11 @@ import { useRouter } from 'next/router';
 
 interface TopbarProps {
   setMobileOpen: (open: boolean) => void;
+  sidebarCollapsed: boolean;
+  setSidebarCollapsed: (collapsed: boolean) => void;
 }
 
-export default function Topbar({ setMobileOpen }: TopbarProps) {
+export default function Topbar({ setMobileOpen, sidebarCollapsed, setSidebarCollapsed }: TopbarProps) {
   const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -29,7 +31,7 @@ export default function Topbar({ setMobileOpen }: TopbarProps) {
   }, []);
   
   return (
-    <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white border-b border-agri-beige shadow-sm">
+    <div className="fixed top-0 left-0 right-0 z-30 flex h-16 flex-shrink-0 bg-white border-b border-agri-beige shadow-sm lg:static lg:z-auto">
       <button
         type="button"
         className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-agri-green lg:hidden hover:bg-gray-50"
@@ -37,6 +39,15 @@ export default function Topbar({ setMobileOpen }: TopbarProps) {
       >
         <span className="sr-only">Open sidebar</span>
         <Menu className="h-6 w-6" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        className="hidden lg:flex items-center justify-center border-r border-gray-200 px-4 text-gray-500 hover:bg-gray-50 hover:text-agri-green focus:outline-none focus:ring-2 focus:ring-inset focus:ring-agri-green"
+        onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+        title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+      >
+        {sidebarCollapsed ? <PanelLeftOpen className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
       </button>
       
       <div className="flex flex-1 justify-between px-4 sm:px-6 lg:px-8">

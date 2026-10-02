@@ -114,11 +114,11 @@ export default function FarmerDashboard() {
       </Head>
 
       {/* Header Banner */}
-      <div className="mb-8 flex justify-between items-center flex-wrap gap-4">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Leaf className="h-7 w-7 text-agri-green" />
-            {data?.farm_name || 'My Farm'} Dashboard
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <Leaf className="h-6 w-6 sm:h-7 sm:w-7 text-agri-green flex-shrink-0" />
+            <span className="truncate">{data?.farm_name || 'My Farm'} Dashboard</span>
           </h1>
           <p className="mt-1 text-sm text-gray-500">
             Real-time farm overview, crop surveillance, and autonomous rover controllers.
@@ -131,7 +131,7 @@ export default function FarmerDashboard() {
             className="btn-outline flex items-center gap-2 text-sm"
           >
             <Edit2 className="h-4 w-4" />
-            {data?.setup_required ? 'Create Farm Profile' : 'Configure Farm Details'}
+            {data?.setup_required ? 'Create Farm Profile' : 'Configure Farm'}
           </button>
         </div>
       </div>
@@ -154,7 +154,7 @@ export default function FarmerDashboard() {
       ) : (
         <>
           {/* Key Metrics Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
             <DataCard 
               title={`Total ${TERMS.field}s`} 
               value={data?.total_fields ?? 0} 
@@ -181,7 +181,7 @@ export default function FarmerDashboard() {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8 mb-6 sm:mb-8">
             {/* ROVER MISSION & CONTROLLERS SECTION */}
             <div className="lg:col-span-2 bg-white rounded-xl border border-agri-beige shadow-sm overflow-hidden flex flex-col justify-between">
               <div className="px-6 py-4 border-b bg-gray-50/70 flex justify-between items-center flex-wrap gap-2">
@@ -372,7 +372,7 @@ export default function FarmerDashboard() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Location / District *</label>
                   <input

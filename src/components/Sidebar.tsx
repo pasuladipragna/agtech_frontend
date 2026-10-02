@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthContext';
@@ -25,11 +25,21 @@ import {
 interface SidebarProps {
   mobileOpen: boolean;
   setMobileOpen: (open: boolean) => void;
+  collapsed: boolean;
 }
 
-export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
+export default function Sidebar({ mobileOpen, setMobileOpen, collapsed }: SidebarProps) {
   const router = useRouter();
   const { user } = useAuth();
+  const [roverCameraMaximized, setRoverCameraMaximized] = useState(false);
+
+  useEffect(() => {
+    const handleRoverCameraMaximize = (event: Event) => {
+      setRoverCameraMaximized((event as CustomEvent<boolean>).detail);
+    };
+    window.addEventListener('rover-camera-maximize', handleRoverCameraMaximize);
+    return () => window.removeEventListener('rover-camera-maximize', handleRoverCameraMaximize);
+  }, []);
   
   const isAdmin = user?.role === 'ADMIN';
   const prefix = isAdmin ? '/admin' : '/farmer';
@@ -81,17 +91,17 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
 
       {/* Sidebar */}
       <div 
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-agri-dark text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col ${
+        className={`${roverCameraMaximized ? 'hidden' : ''} fixed inset-y-0 left-0 z-50 ${collapsed ? 'w-20' : 'w-64'} bg-agri-dark text-white transform transition-all duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex h-16 shrink-0 items-center px-6 bg-gray-900">
+        <div className={`flex h-16 shrink-0 items-center bg-gray-900 ${collapsed ? 'justify-center px-2' : 'px-6'}`}>
           <Leaf className="h-8 w-8 text-agri-green mr-3" />
-          <span className="font-bold text-xl tracking-tight text-white">Smart AgriTech</span>
+          {!collapsed && <span className="font-bold text-xl tracking-tight text-white">Smart AgriTech</span>}
         </div>
 
-        <div className="flex flex-1 flex-col overflow-y-auto px-4 py-6">
-          {isAdmin && (
+        <div className={`flex flex-1 flex-col overflow-y-auto py-6 ${collapsed ? 'px-2' : 'px-4'}`}>
+          {isAdmin && !collapsed && (
             <div className="mb-6 px-2">
               <span className="inline-flex items-center rounded-md bg-blue-400/10 px-2 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-400/30">
                 ADMINISTRATION
@@ -104,8 +114,9 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`
-                  group flex items-center px-3 py-2.5 text-sm font-medium rounded-md transition-colors
+                title={collapsed ? item.name : undefined}
+                  className={`
+                  group flex items-center ${collapsed ? 'justify-center px-2' : 'px-3'} py-2.5 text-sm font-medium rounded-md transition-colors
                   ${isActive(item.href) 
                     ? 'bg-agri-green text-white' 
                     : 'text-gray-300 hover:bg-white/10 hover:text-white'
@@ -114,12 +125,12 @@ export default function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
                 onClick={() => setMobileOpen(false)}
               >
                 <item.icon
-                  className={`mr-3 h-5 w-5 flex-shrink-0 transition-colors
+                  className={`${collapsed ? '' : 'mr-3'} h-5 w-5 flex-shrink-0 transition-colors
                     ${isActive(item.href) ? 'text-white' : 'text-gray-400 group-hover:text-white'}
                   `}
                   aria-hidden="true"
                 />
-                {item.name}
+                {!collapsed && item.name}
               </Link>
             ))}
           </nav>
