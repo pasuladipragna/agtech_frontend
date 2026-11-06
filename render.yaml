@@ -11,4 +11,4 @@ services:
       - key: NODE_VERSION
         value: 20.19.0
       - key: NEXT_PUBLIC_API_URL
-        value: https://agtech-backend.onrender.com/api/v1
+        value: https://agtech-backend-iic3.onrender.com/api/v1
