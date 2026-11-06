@@ -269,7 +269,7 @@ export default function FarmPage() {
 
           <form onSubmit={handleSaveLocation} className="p-6 space-y-5">
             <p className="text-sm text-gray-500">
-              Search for your farm's nearest town, village, or district. The weather module will fetch{' '}
+              Search for your farm&apos;s nearest town, village, or district. The weather module will fetch{' '}
               <strong>real-time conditions</strong> from that location automatically.
             </p>
 

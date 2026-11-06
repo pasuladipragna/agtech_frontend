@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: agtech-frontend
+    env: node
+    region: oregon
+    plan: starter
+    rootDir: .
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.19.0
+      - key: NEXT_PUBLIC_API_URL
+        value: https://agtech-backend.onrender.com/api/v1

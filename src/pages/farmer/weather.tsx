@@ -282,7 +282,7 @@ export default function WeatherPage() {
           </div>
 
           <p className="text-xs text-gray-400">
-            Selecting a location saves it as your farm's weather location and immediately updates the forecast below.
+            Selecting a location saves it as your farm&apos;s weather location and immediately updates the forecast below.
             You can also set it from{' '}
             <Link href="/farmer/farm" className="text-agri-green underline">My Farm</Link>.
           </p>

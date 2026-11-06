@@ -1,10 +1,32 @@
-# Next.js frontend — additional rules (root .gitignore covers the rest)
+# Next.js / React Frontend Gitignore
+
+# Dependencies
 node_modules/
+.pnpm-store
+
+# Next.js build outputs
 .next/
 out/
-tsconfig.tsbuildinfo
+build/
+dist/
+
+# TypeScript / Cache
+*.tsbuildinfo
 next-env.d.ts
+
+# Environment files
 .env
-.env.*
+.env*.local
 !.env.example
-uploads/
+
+# Logs & Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
